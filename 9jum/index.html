@@ -1,0 +1,934 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>NextWatchVidio</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+:root{
+  --blue:#159cff;
+  --blue2:#006eff;
+  --blue3:#0048ff;
+  --white:#ffffff;
+  --text:#f5f9ff;
+  --muted:#9eb1c7;
+  --bg:#020914;
+  --card:#071525;
+}
+
+html,
+body{
+  width:100%;
+  min-height:100%;
+  background:var(--bg);
+  color:var(--white);
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Arial,
+    sans-serif;
+  overflow-x:hidden;
+}
+
+body{
+  background:
+    radial-gradient(
+      circle at 50% -10%,
+      rgba(0,145,255,.28),
+      transparent 38%
+    ),
+    radial-gradient(
+      circle at 0% 60%,
+      rgba(0,88,255,.12),
+      transparent 30%
+    ),
+    linear-gradient(
+      180deg,
+      #020914 0%,
+      #030c18 50%,
+      #020712 100%
+    );
+}
+
+/* PAGE */
+
+.page{
+  width:100%;
+  max-width:500px;
+  margin:auto;
+  min-height:100vh;
+  padding-bottom:45px;
+}
+
+/* HEADER */
+
+.header{
+  padding:22px 18px 17px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.logo{
+  font-size:25px;
+  line-height:1;
+  font-weight:950;
+  letter-spacing:-.7px;
+  color:#fff;
+}
+
+.logo span{
+  color:var(--blue);
+}
+
+.logo-line{
+  width:46px;
+  height:3px;
+  margin-top:8px;
+  border-radius:10px;
+  background:linear-gradient(
+    90deg,
+    #fff,
+    var(--blue),
+    transparent
+  );
+}
+
+.live-badge{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  padding:7px 10px;
+  border-radius:20px;
+  background:rgba(21,156,255,.09);
+  border:1px solid rgba(21,156,255,.2);
+  color:#bcdfff;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:1px;
+}
+
+.live-dot{
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:#19a5ff;
+  box-shadow:0 0 10px #159cff;
+}
+
+/* NATIVE ADS */
+
+.video-native-ad{
+  margin:10px 12px 17px;
+  padding:10px;
+  border-radius:15px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(12,30,51,.96),
+      rgba(3,15,29,.96)
+    );
+
+  border:1px solid rgba(75,169,255,.16);
+
+  box-shadow:
+    0 12px 30px rgba(0,0,0,.24),
+    inset 0 1px rgba(255,255,255,.025);
+
+  overflow:hidden;
+}
+
+.ads-label{
+  text-align:center;
+  color:#60758d;
+  font-size:8px;
+  font-weight:700;
+  letter-spacing:2px;
+  margin-bottom:8px;
+}
+
+/* VIDEO CARD */
+
+.video-card{
+  margin:0 12px;
+
+  border-radius:24px;
+  overflow:hidden;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(10,29,49,.98),
+      rgba(3,13,25,.98)
+    );
+
+  border:1px solid rgba(84,179,255,.22);
+
+  box-shadow:
+    0 25px 70px rgba(0,0,0,.52),
+    0 0 45px rgba(0,113,255,.09),
+    inset 0 1px rgba(255,255,255,.035);
+}
+
+/* PHOTO */
+
+.photo-box{
+  position:relative;
+  width:100%;
+  background:#000;
+  overflow:hidden;
+  cursor:pointer;
+}
+
+#videoPoster{
+  width:100%;
+  display:block;
+  max-height:76vh;
+  object-fit:cover;
+  background:#000;
+
+  transition:
+    transform .45s ease,
+    filter .45s ease;
+}
+
+/* PHOTO HOVER */
+
+.photo-box:hover #videoPoster{
+  transform:scale(1.025);
+  filter:brightness(.86);
+}
+
+/* DARK GRADIENT */
+
+.photo-overlay{
+  position:absolute;
+  inset:0;
+  z-index:2;
+  pointer-events:none;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(0,0,0,.02) 0%,
+      rgba(0,0,0,.05) 45%,
+      rgba(0,12,30,.52) 100%
+    );
+}
+
+/* PLAY BUTTON */
+
+.play-button{
+  position:absolute;
+  z-index:6;
+
+  left:50%;
+  top:50%;
+
+  width:88px;
+  height:88px;
+
+  transform:translate(-50%,-50%);
+
+  border-radius:50%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(30,166,255,.98),
+      rgba(0,91,255,.98)
+    );
+
+  border:3px solid rgba(255,255,255,.96);
+
+  box-shadow:
+    0 0 0 8px rgba(20,153,255,.12),
+    0 0 0 16px rgba(20,153,255,.045),
+    0 12px 35px rgba(0,103,255,.55),
+    inset 0 1px 3px rgba(255,255,255,.4);
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease;
+}
+
+.play-button::before{
+  content:"";
+
+  width:0;
+  height:0;
+
+  margin-left:7px;
+
+  border-top:15px solid transparent;
+  border-bottom:15px solid transparent;
+  border-left:23px solid #fff;
+
+  filter:
+    drop-shadow(0 1px 2px rgba(0,0,0,.25));
+}
+
+.play-button:hover{
+  transform:
+    translate(-50%,-50%)
+    scale(1.09);
+
+  box-shadow:
+    0 0 0 10px rgba(20,153,255,.15),
+    0 0 0 20px rgba(20,153,255,.05),
+    0 15px 45px rgba(0,120,255,.72),
+    inset 0 1px 4px rgba(255,255,255,.45);
+}
+
+.play-button:active{
+  transform:
+    translate(-50%,-50%)
+    scale(.94);
+}
+
+/* PLAY LABEL */
+
+.play-label{
+  position:absolute;
+  z-index:6;
+
+  left:50%;
+  top:calc(50% + 66px);
+
+  transform:translateX(-50%);
+
+  padding:7px 14px;
+
+  white-space:nowrap;
+
+  border-radius:30px;
+
+  background:rgba(2,12,25,.72);
+
+  border:1px solid rgba(255,255,255,.15);
+
+  backdrop-filter:blur(10px);
+
+  color:#fff;
+
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:1.4px;
+
+  box-shadow:
+    0 5px 20px rgba(0,0,0,.3);
+}
+
+/* LOADING */
+
+.photo-loading{
+  position:absolute;
+  inset:0;
+  z-index:20;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(0,104,190,.35),
+      #020914 72%
+    );
+
+  transition:
+    opacity .35s ease,
+    visibility .35s ease;
+}
+
+.photo-loading.hide{
+  opacity:0;
+  visibility:hidden;
+}
+
+.loading-logo{
+  width:58px;
+  height:58px;
+
+  border-radius:50%;
+
+  border:4px solid rgba(255,255,255,.12);
+
+  border-top-color:#159cff;
+  border-right-color:#fff;
+
+  animation:
+    loadingSpin .75s linear infinite;
+
+  box-shadow:
+    0 0 30px rgba(21,156,255,.5);
+}
+
+.loading-text{
+  position:absolute;
+  margin-top:90px;
+
+  color:#fff;
+
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:2.5px;
+
+  text-shadow:
+    0 0 14px rgba(21,156,255,.8);
+}
+
+@keyframes loadingSpin{
+  to{
+    transform:rotate(360deg);
+  }
+}
+
+/* CONTENT */
+
+.content{
+  padding:19px 18px 18px;
+}
+
+.title{
+  color:#fff;
+
+  font-size:20px;
+  font-weight:900;
+  line-height:1.3;
+
+  letter-spacing:-.3px;
+
+  margin-bottom:9px;
+}
+
+.description{
+  color:var(--muted);
+
+  font-size:13px;
+  line-height:1.55;
+
+  max-width:400px;
+}
+
+/* VIDEO STATUS */
+
+.video-status{
+  display:flex;
+  align-items:center;
+  gap:8px;
+
+  margin-top:15px;
+}
+
+.status-icon{
+  width:7px;
+  height:7px;
+
+  border-radius:50%;
+
+  background:#19a5ff;
+
+  box-shadow:
+    0 0 12px #159cff;
+}
+
+.status-text{
+  color:#7391ac;
+
+  font-size:9px;
+  font-weight:800;
+
+  letter-spacing:1px;
+}
+
+/* TRENDING */
+
+.trending{
+  margin:19px 12px 0;
+  padding:18px;
+
+  border-radius:19px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(8,27,47,.96),
+      rgba(3,14,27,.96)
+    );
+
+  border:1px solid rgba(60,169,255,.15);
+
+  box-shadow:
+    0 15px 35px rgba(0,0,0,.25);
+}
+
+.trending-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  margin-bottom:10px;
+}
+
+.trending-title{
+  color:#fff;
+
+  font-size:13px;
+  font-weight:900;
+
+  letter-spacing:.4px;
+}
+
+.trending-line{
+  width:45px;
+  height:2px;
+
+  border-radius:10px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #159cff,
+      transparent
+    );
+}
+
+.trending-text{
+  color:#91a8be;
+
+  font-size:12px;
+  line-height:1.55;
+}
+
+/* FOOTER */
+
+.footer{
+  padding:28px 15px 10px;
+
+  text-align:center;
+
+  color:#40546a;
+
+  font-size:9px;
+  letter-spacing:.5px;
+}
+
+/* MOBILE */
+
+@media(max-width:360px){
+
+  .logo{
+    font-size:22px;
+  }
+
+  .play-button{
+    width:74px;
+    height:74px;
+  }
+
+  .play-button::before{
+    border-top-width:13px;
+    border-bottom-width:13px;
+    border-left-width:20px;
+  }
+
+  .title{
+    font-size:18px;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+  <!-- HEADER -->
+
+  <div class="header">
+
+    <div>
+      <div class="logo">
+        NextWatch<span>Vidio</span>
+      </div>
+
+      <div class="logo-line"></div>
+    </div>
+
+    <div class="live-badge">
+      <span class="live-dot"></span>
+      VIDEO
+    </div>
+
+  </div>
+
+
+  <!-- ========================================= -->
+  <!-- NATIVE BANNER ATAS -->
+  <!-- ========================================= -->
+
+  <div class="video-native-ad">
+
+    <div class="ads-label">
+      ADVERTISEMENT
+    </div>
+
+    <div>
+      <script
+        data-cfasync="false"
+        async
+        type="text/javascript"
+        src="//qw.rolledipocras.com/tiTtAiKEeLuZ/151239">
+      </script>
+    </div>
+
+  </div>
+
+
+  <!-- VIDEO -->
+
+  <div class="video-card">
+
+    <div
+      class="photo-box"
+      id="playArea"
+    >
+
+      <!-- LOADING -->
+
+      <div
+        class="photo-loading"
+        id="photoLoading"
+      >
+
+        <div class="loading-logo"></div>
+
+        <div class="loading-text">
+          LOADING VIDEO
+        </div>
+
+      </div>
+
+
+      <!-- FOTO -->
+
+      <img
+        id="videoPoster"
+        src="https://cdn.aceimg.com/BZytjrx7e.jpg"
+        alt="Video"
+      >
+
+
+      <!-- OVERLAY -->
+
+      <div class="photo-overlay"></div>
+
+
+      <!-- PLAY -->
+
+      <div
+        class="play-button"
+        id="playButton"
+        aria-label="Play video"
+      ></div>
+
+
+      <div class="play-label">
+        PLAY VIDEO
+      </div>
+
+    </div>
+
+
+    <!-- CONTENT -->
+
+    <div class="content">
+
+      <div class="title">
+        Watch the full video
+      </div>
+
+      <div class="description">
+        Tap the play button to continue watching the full content.
+      </div>
+
+      <div class="video-status">
+
+        <div class="status-icon"></div>
+
+        <div class="status-text">
+          READY TO WATCH
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ========================================= -->
+    <!-- NATIVE BANNER BAWAH -->
+    <!-- ========================================= -->
+
+    <div class="video-native-ad">
+
+      <div class="ads-label">
+        ADVERTISEMENT
+      </div>
+
+      <div id="native-ad-script-slot">
+
+        <script
+          data-cfasync="false"
+          async
+          type="text/javascript"
+          src="//ju.bionomysolera.com/tKxL7nY316cl3r5/155722">
+        </script>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- TRENDING -->
+
+  <div class="trending">
+
+    <div class="trending-header">
+
+      <div class="trending-title">
+        TRENDING NOW
+      </div>
+
+      <div class="trending-line"></div>
+
+    </div>
+
+    <div class="trending-text">
+      Don't miss the latest videos. Tap the play button above to continue.
+    </div>
+
+  </div>
+
+
+  <!-- FOOTER -->
+
+  <div class="footer">
+    © 2026 NextWatchVidio
+  </div>
+
+</div>
+
+
+<script>
+(function(){
+
+  const poster =
+    document.getElementById("videoPoster");
+
+  const loading =
+    document.getElementById("photoLoading");
+
+  const playArea =
+    document.getElementById("playArea");
+
+  const playButton =
+    document.getElementById("playButton");
+
+
+  /*
+   * LINK TUJUAN PLAY
+   * Link ini sebelumnya digunakan
+   * oleh tombol FULL VIDS.
+   */
+
+  const targetUrl =
+    "https://uplcm.com/4/11462883";
+
+
+  if(!poster){
+    return;
+  }
+
+
+  /* Sembunyikan foto ketika loading */
+
+  poster.style.visibility = "hidden";
+
+
+  /* Loading 1 detik */
+
+  setTimeout(function(){
+
+    poster.style.visibility = "visible";
+
+    if(loading){
+
+      loading.classList.add("hide");
+
+      setTimeout(function(){
+
+        loading.remove();
+
+      },350);
+
+    }
+
+  },1000);
+
+
+  /*
+   * PLAY
+   */
+
+  function openVideo(){
+
+    window.open(
+      targetUrl,
+      "_blank",
+      "noopener,noreferrer"
+    );
+
+  }
+
+
+  /*
+   * Klik tombol Play
+   */
+
+  playButton.addEventListener(
+    "click",
+    function(e){
+
+      e.stopPropagation();
+
+      openVideo();
+
+    }
+  );
+
+
+  /*
+   * Klik area foto
+   */
+
+  playArea.addEventListener(
+    "click",
+    function(e){
+
+      if(
+        e.target === playArea ||
+        e.target === poster
+      ){
+
+        openVideo();
+
+      }
+
+    }
+  );
+
+
+  /*
+   * Disable klik kanan foto
+   */
+
+  poster.addEventListener(
+    "contextmenu",
+    function(e){
+
+      e.preventDefault();
+
+    }
+  );
+
+})();
+</script>
+
+
+<!-- ========================================= -->
+<!-- HISTATS -->
+<!-- ========================================= -->
+
+<script type="text/javascript">
+
+var _Hasync = _Hasync || [];
+
+_Hasync.push([
+  'Histats.start',
+  '1,5044824,4,0,0,0,00010000'
+]);
+
+_Hasync.push([
+  'Histats.fasi',
+  '1'
+]);
+
+_Hasync.push([
+  'Histats.track_hits',
+  ''
+]);
+
+(function(){
+
+  var hs =
+    document.createElement('script');
+
+  hs.type =
+    'text/javascript';
+
+  hs.async =
+    true;
+
+  hs.src =
+    ('//s10.histats.com/js15_as.js');
+
+  (
+    document.getElementsByTagName('head')[0] ||
+    document.getElementsByTagName('body')[0]
+  ).appendChild(hs);
+
+})();
+
+</script>
+
+
+<noscript>
+
+  <a
+    href="/"
+    target="_blank"
+  >
+
+    <img
+      src="//sstatic1.histats.com/0.gif?4950000&101"
+      alt=""
+      border="0"
+    >
+
+  </a>
+
+</noscript>
+
+</body>
+</html>
